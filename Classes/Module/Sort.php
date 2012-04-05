@@ -35,11 +35,23 @@ require_once(PATH_txdam.'lib/class.tx_dam_iterator_db_lang_ovl.php');
 class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 
 	/**
+	 * @var t3lib_DB
+	 */
+	protected $db;
+	
+	/**
+	 * constructor
+	 */
+	public function __construct() {
+		$this->db = $GLOBALS['TYPO3_DB'];
+	}
+	
+	/**
 	 * Function menu initialization
 	 *
 	 * @return	array
 	 */
-	function modMenu() {
+	public function modMenu() {
 		global $LANG;
 
 		return array(
@@ -57,7 +69,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	function head()	{
+	public function head()	{
 		global $LANG;
 
 			// Init gui items and ...
@@ -74,7 +86,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML output
 	 */
-	function main() {
+	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA;
 
 		$content = '';
@@ -107,7 +119,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 		               LEFT JOIN tx_eddamcatsort_media m ON (mm.uid_local = m.dam AND mm.uid_foreign = m.category)
 		         WHERE m.uid IS NULL";
 		
-		$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $sql);
+		$res = $this->db->sql_query($sql);
 
 			// Use the current selection to create a query and count selected records
 		$this->pObj->selection->addSelectionToQuery();
@@ -155,7 +167,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 					$uidList = array();
 					$res = $this->pObj->selection->execSelectionQuery();
 
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					while ($row = $this->db->sql_fetch_assoc($res)) {
 						$uidList[] = $row['uid'];
 					}
 					$itemList = implode(',', $uidList);
@@ -305,7 +317,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 * @param	boolean		If true, form-fields will be wrapped around
 	 * @return	string		HTML table with the selector box (name: displayFields['.$table.'][])
 	 */
-	function fieldSelectBox($table, $allFields, $selectedFields, $formFields = true) {
+	public function fieldSelectBox($table, $allFields, $selectedFields, $formFields = true) {
 		global $TCA, $LANG;
 
 		t3lib_div::loadTCA($table);
@@ -349,7 +361,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 * @param	boolean		$useExludeFieldList: ...
 	 * @return	array		Array, where values are fieldnames to include in query
 	 */
-	function makeAllFieldList($table, $dontCheckUser = false, $useExludeFieldList = true) {
+	public function makeAllFieldList($table, $dontCheckUser = false, $useExludeFieldList = true) {
 		global $TCA, $BE_USER;
 
 			// Init fieldlist array:
@@ -401,7 +413,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 * @param	boolean		If true, form-fields will be wrapped around
 	 * @return	string		<select> HTML element (if there were items for the box anyways...)
 	 */
-	function languageSwitch($pid, $currentLanguage, $formFields = true) {
+	public function languageSwitch($pid, $currentLanguage, $formFields = true) {
 		$content = '';
 
 			// get all avalibale languages for the page
@@ -435,7 +447,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return	array		Language records including faked record for default language
 	 */
-	function getLanguages($id)	{
+	public function getLanguages($id)	{
 		global $LANG;
 
 		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
@@ -452,7 +464,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 
 		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
 		if ($id)	{
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$rows = $this->db->exec_SELECTgetRows(
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
 							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
@@ -460,7 +472,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 							'sys_language.title'
 						);
 		} else {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$rows = $this->db->exec_SELECTgetRows(
 							'sys_language.*',
 							'sys_language',
 							'sys_language.hidden=0',

@@ -29,19 +29,34 @@ require_once (PATH_txdam.'lib/class.tx_dam_actionbase.php');
 class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 
 	/**
+	 * @var t3lib_DB
+	 */
+	protected $db;
+	
+	/**
 	 * Defines the types that the object can render
 	 * @var array
 	 */
-	var $typesAvailable = array('icon', 'control');
+	public $typesAvailable = array('icon', 'control');
 
 	/**
 	 * If set the action is for itmes with edit permissions only
-	 * @access private
+	 * @var boolean
 	 */
-	var $editPermsNeeded = true;
-	
-	var $moveId = 0;
+	protected $editPermsNeeded = true;
 
+	/**
+	 * @var int
+	 */
+	protected $moveId = 0;
+
+	/**
+	 * constructor
+	 */
+	public function __construct() {
+		$this->db = $GLOBALS['TYPO3_DB'];
+	}
+	
 	/**
 	 * Returns true if the action is of the wanted type
 	 * This method should return true if the action is possibly true.
@@ -53,7 +68,7 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 	 * @param	array		$env Environment array. Can be set with setEnv() too.
 	 * @return	boolean
 	 */
-	function isPossiblyValid ($type, $itemInfo=NULL, $env=NULL) {
+	public function isPossiblyValid ($type, $itemInfo=NULL, $env=NULL) {
 		if ($valid = $this->isTypeValid ($type, $itemInfo, $env)) {
 			$valid = ($this->itemInfo['__type'] == 'record'); # AND ($this->itemInfo['__table'] == 'tx_dam');
 		}
@@ -68,7 +83,7 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 	 * @param	array		$env Environment array. Can be set with setEnv() too.
 	 * @return	boolean
 	 */
-	function isValid ($type, $itemInfo=NULL, $env=NULL) {
+	public function isValid ($type, $itemInfo=NULL, $env=NULL) {
 		global $TCA;
 
 		$valid = $this->isTypeValid ($type, $itemInfo, $env);
@@ -100,14 +115,14 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
  						 ORDER BY t1.sorting desc
 								LIMIT 0,2";		
 	
-				$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $sql);
+				$res = $this->db->sql_query($sql);
 
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))
+				if ($row = $this->db->sql_fetch_assoc($res))
 				{
 					$first_id = $row['uid'];
 				}
 
-				if ($first_id && $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))
+				if ($first_id && $row = $this->db->sql_fetch_assoc($res))
 				{
 					$second_id = $row['uid'];
 				}
@@ -137,7 +152,7 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 	 * @param	string		$addAttribute Additional attributes
 	 * @return	string
 	 */
-	function getIcon ($addAttribute='') {
+	public function getIcon ($addAttribute='') {
 		global $TCA;
 
 		$iconFile = 'gfx/button_up.gif';
@@ -157,7 +172,7 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 	 *
 	 * @return	string
 	 */
-	function getDescription () {
+	public function getDescription () {
 		return $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveUp');
 	}
 
@@ -165,9 +180,8 @@ class Tx_EdDamcatsort_Component_Action_Up extends tx_dam_actionbase {
 	 * Returns a command array for the current type
 	 *
 	 * @return	array		Command array
-	 * @access private
 	 */
-	function _getCommand() {
+	public function _getCommand() {
 
 		$params='&cmd[tx_eddamcatsort_media]['.$this->itemInfo['media_uid'].'][move]='.$this->moveId;
 		
