@@ -41,7 +41,6 @@ class Tx_EdDamcatsort_Domain_Repository_MediaRepository extends Tx_Extbase_Persi
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
-
 }
 
 ?>

@@ -78,18 +78,76 @@ class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_A
 	 * @var Tx_EdDamcatsort_Domain_Repository_MediaRepository
 	 */
 	protected $mediaRepository;
+
+	/**
+	 * @var Tx_EdDamcatsort_Domain_Repository_DamCategoryRepository
+	 */
+	protected $categoryRepository;
 	
 	/**
 	 * @var Tx_EdDamcatsort_Domain_Model_Media
 	 */
 	protected $_firstMedia;
 	
+	/**
+	 * @var int
+	 */
+	protected $_mediaCount = -1;
+	
+	/**
+	 * @var int
+	 */
+	protected $_subCatCount = -1;
+	
+	/**
+	 * This is called from the magic __wakeup() method
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+		parent::initializeObject();
+		
+		$this->mediaRepository = t3lib_div::makeInstance('Tx_EdDamcatsort_Domain_Repository_MediaRepository');
+		$this->categoryRepository = t3lib_div::makeInstance('Tx_EdDamcatsort_Domain_Repository_DamCategoryRepository');
+	}
+	
+	/**
+	 * @return Tx_EdDamcatsort_Domain_Model_Media
+	 */
 	public function getFirstMedia() {
 		if (!$this->_firstMedia) {
-			$this->mediaRepository = t3lib_div::makeInstance('Tx_EdDamcatsort_Domain_Repository_MediaRepository');
-			$this->_firstMedia = $this->mediaRepository->findOneByCategory($this); 
+			$this->_firstMedia = $this->mediaRepository->findOneByCategory($this);
 		}
 		return $this->_firstMedia;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getMediaCount() {
+		if ($this->_mediaCount < 0) {
+			$this->_mediaCount = $this->mediaRepository->countByCategory($this);
+		}
+		
+		return $this->_mediaCount;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getSubCatCount() {
+		if ($this->_subCatCount < 0) {
+			$this->_subCatCount = $this->categoryRepository->countByParentId($this);
+		}
+		
+		return $this->_subCatCount;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getItemsCount() {
+		return $this->getSubCatCount() + $this->getMediaCount();
 	}
 	
 	/**
