@@ -100,6 +100,11 @@ class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_A
 	protected $_subCatCount = -1;
 	
 	/**
+	 * @var Tx_Extbase_Persistence_QueryResult
+	 */
+	protected $_medias;
+	
+	/**
 	 * This is called from the magic __wakeup() method
 	 *
 	 * @return void
@@ -111,6 +116,16 @@ class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_A
 		$this->categoryRepository = t3lib_div::makeInstance('Tx_EdDamcatsort_Domain_Repository_DamCategoryRepository');
 	}
 	
+	/**
+	 * @return Tx_Extbase_Persistence_QueryResult
+	 */
+	public function getMedias() {
+		if (!$this->_medias) {
+			$this->_medias = $this->mediaRepository->findByCategory($this);
+		}
+		return $this->_medias;
+	}
+
 	/**
 	 * @return Tx_EdDamcatsort_Domain_Model_Media
 	 */
