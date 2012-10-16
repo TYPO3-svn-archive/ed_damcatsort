@@ -45,10 +45,11 @@ class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_Abst
 	protected $title;
 	
 	/**
-	 * category
-	 * @var int
+	 * categories
+	 * @lazy
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EdDamcatsort_Domain_Model_AbstractDamCategory>
 	 */
-	protected $category;
+	protected $categories;
 	
 	/**
 	 * indexType
@@ -372,24 +373,50 @@ class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_Abst
 	}
 	
 	/**
-	 * Setter for category
+	 * Setter for categories
 	 *
-	 * @param int
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_EdDamcatsort_Domain_Model_AbstractDamCategory> $categories
 	 * @return void
 	 */
-	public function setCategory($category) {
-		$this->category = $category;
+	public function setCategories($categories) {
+		$this->categories = $categories;
 	}
-	
+
 	/**
-	 * Getter for category
+	 * Add category
 	 *
-	 * @return int
+	 * @param Tx_EdDamcatsort_Domain_Model_AbstractDamCategory $category
+	 * @return void
 	 */
-	public function getCategory() {
-		return $this->category;
+	public function addCategory(Tx_EdDamcatsort_Domain_Model_AbstractDamCategory $category) {
+		$this->categories->attach($category);
 	}
-	
+
+	/**
+	 * Getter for categories
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EdDamcatsort_Domain_Model_AbstractDamCategory>
+	 */
+	public function getCategories() {
+		return $this->categories;
+	}
+
+	/**
+	 * Getter for categories
+	 *
+	 * @return string
+	 */
+	public function getCategoryUids() {
+		$uids = array();
+
+		foreach ($this->getCategories() as $category) {
+			/* @var $category Tx_EdDamcatsort_Domain_Model_AbstractDamCategory */
+			$uids[] = $category->getUid();
+		}
+
+		return implode(',', $uids);
+	}
+
 	/**
 	 * Setter for indexType
 	 *

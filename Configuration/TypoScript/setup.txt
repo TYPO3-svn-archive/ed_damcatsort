@@ -5,6 +5,9 @@ config.tx_extbase {
 				newRecordStoragePid = 0
 				mapping {
 					tableName = tx_dam
+					columns {
+						category.mapOnProperty = categories
+					}
 				}
 			}
 
