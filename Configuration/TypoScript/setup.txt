@@ -1,19 +1,21 @@
-plugin.tx_eddamcatsort {
+config.tx_extbase {
 	persistence {
 		classes {
-			Tx_EdDamcatsort_Domain_Model_Dam {
+			Tx_EdDamcatsort_Domain_Model_AbstractDam {
 				newRecordStoragePid = 0
 				mapping {
 					tableName = tx_dam
 				}
 			}
-			Tx_EdDamcatsort_Domain_Model_DamCategory {
+
+			Tx_EdDamcatsort_Domain_Model_AbstractDamCategory {
 				newRecordStoragePid = 0
 				mapping {
 					tableName = tx_dam_cat
 				}
 			}
-			Tx_EdDamcatsort_Domain_Model_Media {
+
+			Tx_EdDamcatsort_Domain_Model_AbstractMedia {
 				newRecordStoragePid = 0
 				mapping {
 					tableName = tx_eddamcatsort_media
@@ -23,6 +25,6 @@ plugin.tx_eddamcatsort {
 	}
 }
 
-config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_Dam < plugin.tx_eddamcatsort.persistence.classes.Tx_EdDamcatsort_Domain_Model_Dam
-config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_DamCategory < plugin.tx_eddamcatsort.persistence.classes.Tx_EdDamcatsort_Domain_Model_DamCategory
-config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_Media < plugin.tx_eddamcatsort.persistence.classes.Tx_EdDamcatsort_Domain_Model_Media
+config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_Dam < config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_AbstractDam
+config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_DamCategory < config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_AbstractDamCategory
+config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_Media < config.tx_extbase.persistence.classes.Tx_EdDamcatsort_Domain_Model_AbstractMedia

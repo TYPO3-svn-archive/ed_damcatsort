@@ -33,6 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'dam' => '',
+			'extbase_domain_decorator' => '',
 		),
 		'conflicts' => array(
 		),

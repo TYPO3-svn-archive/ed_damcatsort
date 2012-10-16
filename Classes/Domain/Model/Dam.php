@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_AbstractDam {
 	
 	/**
 	 * mediaType

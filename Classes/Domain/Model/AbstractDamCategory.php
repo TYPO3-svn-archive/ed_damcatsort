@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Nikola Stojiljkovic <nikola.stojiljkovic(at)essentialdots.com>
+*  (c) 2012 Nikola Stojiljkovic <nikola.stojiljkovic(at)essentialdots.com>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,57 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_EdDamcatsort_Domain_Model_Media extends Tx_EdDamcatsort_Domain_Model_AbstractMedia {
-	
-	/**
-	 * category
-	 * @var Tx_EdDamcatsort_Domain_Model_AbstractDamCategory
-	 */
-	protected $category;
-	
-	/**
-	 * dam
-	 * @var Tx_EdDamcatsort_Domain_Model_AbstractDam
-	 */
-	protected $dam;
+abstract class Tx_EdDamcatsort_Domain_Model_AbstractDamCategory extends Tx_ExtbaseDomainDecorator_DomainObject_AbstractEntity {
 
-	/**
-	 * Setter for category
-	 *
-	 * @param Tx_EdDamcatsort_Domain_Model_AbstractDamCategory
-	 * @return void
-	 */
-	public function setCategory($category) {
-		$this->category = $category;
-	}
-	
-	/**
-	 * Getter for category
-	 *
-	 * @return Tx_EdDamcatsort_Domain_Model_AbstractDamCategory
-	 */
-	public function getCategory() {
-		return $this->category;
-	}
-
-	/**
-	 * Setter for dam
-	 *
-	 * @param Tx_EdDamcatsort_Domain_Model_AbstractDam
-	 * @return void
-	 */
-	public function setDam($dam) {
-		$this->dam = $dam;
-	}
-	
-	/**
-	 * Getter for dam
-	 *
-	 * @return Tx_EdDamcatsort_Domain_Model_AbstractDam
-	 */
-	public function getDam() {
-		return $this->dam;
-	}
 }
 
 ?>

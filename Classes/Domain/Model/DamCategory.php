@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_EdDamcatsort_Domain_Model_AbstractDamCategory {
 	
 	/**
 	 * crdate
@@ -85,7 +85,7 @@ class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_A
 	protected $categoryRepository;
 	
 	/**
-	 * @var Tx_EdDamcatsort_Domain_Model_Media
+	 * @var Tx_EdDamcatsort_Domain_Model_AbstractMedia
 	 */
 	protected $_firstMedia;
 	
@@ -127,7 +127,7 @@ class Tx_EdDamcatsort_Domain_Model_DamCategory extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * @return Tx_EdDamcatsort_Domain_Model_Media
+	 * @return Tx_EdDamcatsort_Domain_Model_AbstractMedia
 	 */
 	public function getFirstMedia() {
 		if (!$this->_firstMedia) {
