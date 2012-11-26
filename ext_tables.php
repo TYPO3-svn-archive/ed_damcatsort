@@ -40,6 +40,19 @@ if (TYPO3_MODE=="BE")	{
 	);
 }
 
+t3lib_div::loadTCA('tx_dam');
+
+$TCA["tx_dam"]["columns"]["tstamp"] = array(
+	'config' => array(
+		'type' => 'passthrough',
+	),
+);
+$TCA["tx_dam"]["columns"]["crdate"] = array(
+	'config' => array(
+		'type' => 'passthrough',
+	),
+);
+
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Extbase DAM Table configuration');
 
 ?>

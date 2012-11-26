@@ -31,7 +31,13 @@ class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_Abst
 	 * @var int
 	 */
 	protected $mediaType;
-		
+
+	/**
+	 * tstamp
+	 * @var DateTime
+	 */
+	protected $crdate;
+
 	/**
 	 * tstamp
 	 * @var DateTime
@@ -333,7 +339,26 @@ class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_Abst
 	public function getMediaType() {
 		return $this->mediaType;
 	}
-	
+
+	/**
+	 * Setter for crdate
+	 *
+	 * @param DateTime
+	 * @return void
+	 */
+	public function setCrdate($crdate) {
+		$this->crdate = $crdate;
+	}
+
+	/**
+	 * Getter for crdate
+	 *
+	 * @return DateTime
+	 */
+	public function getCrdate() {
+		return $this->crdate;
+	}
+
 	/**
 	 * Setter for tstamp
 	 *
@@ -343,7 +368,7 @@ class Tx_EdDamcatsort_Domain_Model_Dam extends Tx_EdDamcatsort_Domain_Model_Abst
 	public function setTstamp($tstamp) {
 		$this->tstamp = $tstamp;
 	}
-	
+
 	/**
 	 * Getter for tstamp
 	 *
