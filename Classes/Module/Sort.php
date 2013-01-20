@@ -337,7 +337,7 @@ class Tx_EdDamcatsort_Module_Sort extends t3lib_extobjbase {
 		}
 
 			// Compile the options into a multiple selector box:
-		$lMenu = '<select size="'.t3lib_div::intInRange(count($allFields) + 1, 3, 8).'" multiple="multiple" name="tx_dam_list_displayFields[]">'.implode('', $opt).'</select>';
+		$lMenu = '<select size="'.t3lib_utility_Math::isIntegerInRange(count($allFields) + 1, 3, 8).'" multiple="multiple" name="tx_dam_list_displayFields[]">'.implode('', $opt).'</select>';
 
 			// Table with the select box:
 		$content .= $formElements[0].'
