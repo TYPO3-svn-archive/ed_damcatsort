@@ -26,16 +26,21 @@
 
 class Tx_EdDamcatsort_Hook_ProcessDatamap {
 
+	/**
+	 * @var string
+	 */
+	protected $category;
+
 	/*
 	 * core: processDatamap_preProcessFieldArray hook function
 	 */
-	function processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $parent) {
+	public function processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $parent) {
 	}
 	
 	/*
 	 * core: processDatamap_postProcessFieldArray hook function
 	 */
-	function processDatamap_postProcessFieldArray ($status, $table, $id, $fieldArray, $parent) {
+	public function processDatamap_postProcessFieldArray ($status, $table, $id, $fieldArray, $parent) {
 		if ($table=='tx_dam') {
 			if ($fieldArray['category']) {
 					//there was a change in categories
@@ -49,8 +54,32 @@ class Tx_EdDamcatsort_Hook_ProcessDatamap {
 			if (strlen($category)==0) {
 				$category = "0";
 			}
-			
-			$sql = "DELETE FROM tx_eddamcatsort_media WHERE category NOT IN (".$category.") AND dam = ".$id;
+
+			$this->category = $category;
+		}
+	}
+
+	/**
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a create or update action is performed on a record.
+	 *
+	 * @param	string $status Operation status
+	 * @param	string $table The table TCEmain is currently processing
+	 * @param	string $rawId The records id (if any)
+	 * @param	array $fieldArray The field names and their values to be processed (passed by reference)
+	 * @param	t3lib_TCEmain $pObj  Reference to the parent object (TCEmain)
+	 * @return	void
+	 * @access public
+	 */
+	public function processDatamap_afterDatabaseOperations($status, $table, $rawId, $fieldArray, $pObj) {
+
+		if ($table=='tx_dam') {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($rawId)) {
+				$id = $rawId;
+			} else {
+				$id = $pObj->substNEWwithIDs[$rawId];
+			}
+
+			$sql = "DELETE FROM tx_eddamcatsort_media WHERE category NOT IN (".$this->category.") AND dam = ".$id;
 
 			$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
 
@@ -60,22 +89,22 @@ class Tx_EdDamcatsort_Hook_ProcessDatamap {
 			               INNER JOIN tx_dam_cat c ON (c.uid = mm.uid_foreign)
 			               LEFT  JOIN tx_eddamcatsort_media m ON (mm.uid_local = m.dam AND mm.uid_foreign = m.category)
 			         WHERE m.uid IS NULL";
-			
+
 			$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
 
 			$rows = array();
-			
+
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$rows[] = $row;
 			}
-			
+
 			foreach ($rows as $row) {
-				$sorting = $parent->getSortNumber('tx_eddamcatsort_media',0,$row['pid']);
+				$sorting = $pObj->getSortNumber('tx_eddamcatsort_media',0,$row['pid']);
 				$sql = "INSERT INTO tx_eddamcatsort_media (pid, category, dam, sorting) VALUES (".$row['pid'].", ".$row['category'].", ".$row['dam'].", ".$sorting.")";
 				$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
 			}
 		}
-	}	
+	}
 }
 
 ?>
